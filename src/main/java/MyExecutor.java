@@ -96,15 +96,13 @@ public class MyExecutor implements Executor {
             while( running.get() )
             {
                 try {
-                    boolean shouldPause = false;
-
                     while (running.get()) {
+                        MyTask task = null;
                         lock.lock();
                         try {
                             if(!inputQueues.get(type).isEmpty())
                             {
-                                MyTask task = inputQueues.get(type).poll();
-                                task.run();
+                               task = inputQueues.get(type).poll();
                             }
                             else
                             {
@@ -115,6 +113,9 @@ public class MyExecutor implements Executor {
                             break;
                         } finally {
                             lock.unlock();
+                        }
+                        if(task != null) {
+                            task.run();
                         }
                     }
                 }
