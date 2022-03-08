@@ -16,7 +16,7 @@ import com.baeldung.spring.data.redis.queue.RedisMessageSubscriberAck;
 
 @Service
 public class ParallelProcessTester {
-
+//po wykonaniu jeszcze raz podlaczyc listenera
     @Autowired
     @Qualifier("publisherTask")
     private RedisMessagePublisherTask redisMessagePublisher;
@@ -33,5 +33,5 @@ public class ParallelProcessTester {
         // set up time limit after which the test is failed
         ((RedisMessageSubscriberAck) redisMessageSubscriberAck.getDelegate()).waitForAll(numberOfTasks);
     }
-
+    //wiecej metod ktore moglyby testowac parametryzowane
 }

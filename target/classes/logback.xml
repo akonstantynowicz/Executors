@@ -2,9 +2,29 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>web - %date [%thread] %-5level %logger{36} - %message%n
+            <pattern>
+                web - %date [%thread] %-5level %logger{36} - %message%n
             </pattern>
         </encoder>
+    </appender>
+
+    <appender name="FILE-LOG"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logger.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                web - %date [%thread] %-5level %logger{36} - %message%n
+            </pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
     </appender>
 
     <logger name="org.springframework" level="WARN" />
@@ -15,5 +35,6 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-LOG"/>
     </root>
 </configuration>

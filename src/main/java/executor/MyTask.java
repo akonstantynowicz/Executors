@@ -7,7 +7,7 @@ import com.baeldung.spring.data.redis.queue.RedisMessagePublisherTask;
 import com.baeldung.spring.data.redis.queue.RedisMessageSubscriberAck;
 
 public class MyTask implements RunnableWithType {
-
+//T extends enum, użytkownik sam ma sobie definiować typy
     RedisMessagePublisherTask redisMessagePublisher;
 
     MessageListenerAdapter redisMessageListener;

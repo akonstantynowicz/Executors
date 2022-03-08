@@ -133,7 +133,7 @@ public class MyExecutor implements Executor {
                             }
                             else
                             {
-                                lockObjectCondition.await();
+                                lockObjectCondition.await(); //SUBSRIBER ACK
                             }
                         } catch (Exception e) {
                             System.out.println("worker thread interrupted");

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class RedisMessageSubscriberAck implements MessageListener {
 
     Map<Long, Long> ack;
+    //lockobjectcondition
 
     public RedisMessageSubscriberAck() {
         this.ack =  new HashMap<>();
