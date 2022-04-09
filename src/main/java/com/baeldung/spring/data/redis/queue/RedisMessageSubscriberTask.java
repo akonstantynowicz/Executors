@@ -2,6 +2,8 @@ package com.baeldung.spring.data.redis.queue;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,25 +19,24 @@ public class RedisMessageSubscriberTask implements MessageListener {
     final static Logger logger = LoggerFactory.getLogger(RedisMessageSubscriberTask.class);
     final ConcurrentHashMap<Long, Long> state;
     final RedisMessagePublisherAck redisMessagePublisher;
+
     public RedisMessageSubscriberTask(ConcurrentHashMap<Long, Long> state,
                                       @Qualifier("publisherAck") RedisMessagePublisherAck redisMessagePublisher) {
         this.state = state;
         this.redisMessagePublisher = redisMessagePublisher;
     }
 
-    @Override public synchronized void onMessage(Message message, byte[] bytes) {
+    @Override public void onMessage(Message message, byte[] bytes) {
         Long key = Long.valueOf(message.toString());
         synchronized (state){
             if (state.containsKey(key)) {
                 Long value = state.get(key);
                 if(value < 2) {
                     state.put(key, value + 1L);
-                    notifyAll();
                 }
                 System.out.println("TaskMess: " + message);
             } else {
                 state.put(key, 1L);
-                notifyAll();
             }
         }
         logger.info("Task: " + message.toString() + " state " + (state.get(key)==1 ? "start" : "end"));
